@@ -1,5 +1,6 @@
 import logging
 import os
+import pandas as pd
 
 logger = logging.getLogger(__name__)
 
@@ -30,3 +31,15 @@ def sauvegarder_kpis_details(kpi_jour, kpi_semaine, kpi_mois, kpi_heure, output_
     kpi_heure.to_csv(fichier_kpi_heure, index=False)
 
     logger.info("[INFO] Tous les KPIs ont été sauvegardés avec succès.")
+
+def sauvegarder_kpis_combines(kpi_jour, kpi_semaine, kpi_mois, kpi_heure, dossier_sortie, nom_fichier='KPIs_global.csv'):
+    os.makedirs(dossier_sortie, exist_ok=True)
+    fichier_kpis_combines = os.path.join(dossier_sortie, nom_fichier)
+
+    logger.info("[INFO] Combinaison des KPIs en un seul fichier...")
+
+    kpis_combines = pd.concat([kpi_jour, kpi_semaine, kpi_mois, kpi_heure], axis=0)
+    kpis_combines.to_csv(fichier_kpis_combines, index=False, encoding='utf-8')
+
+    logger.info(f"[SUCCESS] Fichier CSV combiné '{fichier_kpis_combines}' sauvegardé avec succès.")
+

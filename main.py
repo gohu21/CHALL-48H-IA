@@ -1,6 +1,6 @@
 import os
 import logging
-from save import sauvegarder_fichier, sauvegarder_kpis_details
+from save import sauvegarder_fichier, sauvegarder_kpis_details, sauvegarder_kpis_combines
 from load import charger_fichier_csv
 from cleaning import (
     nettoyer_texte_sauf_liens,
@@ -11,7 +11,6 @@ from cleaning import (
     calculer_kpis
 )
 
-# Configuration du logger
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
@@ -52,15 +51,12 @@ if __name__ == "__main__":
     kpi_output_dir = os.path.join(output_dir, 'KPIs')
     os.makedirs(output_dir, exist_ok=True)
 
-    # Fichiers d'entrée/sortie
     fichier_entree = 'filtered_tweets_engie.csv'
     fichier_csv_sortie = os.path.join(output_dir, 'filtered_tweets_engie_cleaned.csv')
 
-    # Mots-clés
     mots_cles = ['énergie', 'transition', 'engie']
     mots_cles_critiques = ['délai', 'panne', 'urgence', 'scandale']
 
-    # Pipeline complet
     df, kpi_jour, kpi_semaine, kpi_mois, kpi_heure = nettoyer_et_traiter(
         fichier_entree,
         fichier_csv_sortie,
@@ -68,5 +64,5 @@ if __name__ == "__main__":
         mots_cles_critiques
     )
 
-    # Sauvegarde des KPI détaillés
     sauvegarder_kpis_details(kpi_jour, kpi_semaine, kpi_mois, kpi_heure, kpi_output_dir)
+    sauvegarder_kpis_combines(kpi_jour, kpi_semaine, kpi_mois, kpi_heure, output_dir)
