@@ -42,7 +42,7 @@ with st.sidebar:
     st.header("Filtres :wrench:")
 
     # Filtre pour la granularité temporelle
-    time_granularity = st.selectbox("Granularité Temporelle", ["Jour", "Semaine", "Mois"])
+    time_granularity = st.selectbox("Granularité Temporelle", ["Heure", "Jour", "Semaine", "Mois"])
 
     # Filtre pour la plage de dates (uniquement pour la granularité "Jour")
     if time_granularity == "Jour" and 'date' in df.columns:
@@ -63,7 +63,10 @@ with st.sidebar:
 kpi1, kpi2, kpi3 = st.columns(3)
 
 # KPI 1: Nombre total de tweets
-if time_granularity == "Jour":
+if time_granularity == "Heure":
+    total_tweets = df['nombre_tweets_par_heure'].sum()
+    kpi1_title = "Nombre Total de Tweets par Heure"
+elif time_granularity == "Jour":
     total_tweets = df['nombre_tweets_par_jour'].sum()
     kpi1_title = "Nombre Total de Tweets par Jour"
 elif time_granularity == "Semaine":
@@ -88,23 +91,26 @@ kpi2.metric(
     delta=None,
 )
 
-# KPI 3: Nombre total de tweets critiques
-total_critiques = df['nombre_tweets_critiques'].sum()
+# KPI 3: Nombre d'auteurs uniques
+total_auteurs = df['auteurs_uniques'].sum()
 
 kpi3.metric(
-    label="Nombre Total de Tweets Critiques",
-    value=f"{total_critiques:,.0f}",
+    label="Nombre Total d'Auteurs Uniques",
+    value=f"{total_auteurs:,.0f}",
     delta=None,
 )
 
 st.markdown("""---""")
 
 # Graphiques
-col1, col2, col3 = st.columns(3)
+col1, col2 = st.columns(2)
 
 with col1:
     # Graphique 1: Nombre de tweets par granularité temporelle
-    if time_granularity == "Jour" and 'date' in df.columns:
+    if time_granularity == "Heure":
+        fig_tweets = px.bar(df, x='heure', y='nombre_tweets_par_heure',
+                            title='Nombre de Tweets par Heure', color_discrete_sequence=["#0083B8"])
+    elif time_granularity == "Jour" and 'date' in df.columns:
         fig_tweets = px.line(df, x='date', y='nombre_tweets_par_jour',
                              title='Nombre de Tweets par Jour', color_discrete_sequence=["#0083B8"])
     elif time_granularity == "Semaine":
@@ -116,30 +122,27 @@ with col1:
     st.plotly_chart(fig_tweets, use_container_width=True)
 
 with col2:
-    # Graphique 2: Fréquence des mentions Engie par granularité temporelle
-    if time_granularity == "Jour" and 'date' in df.columns:
-        fig_mentions = px.line(df, x='date', y='nombre_mentions_engie',
-                                title='Fréquence des Mentions Engie par Jour', color_discrete_sequence=["#E377C2"])
-    elif time_granularity == "Semaine":
-        fig_mentions = px.bar(df, x='semaine', y='nombre_mentions_engie',
-                                title='Fréquence des Mentions Engie par Semaine', color_discrete_sequence=["#E377C2"])
-    else:  # Mois
-        fig_mentions = px.bar(df, x='mois', y='nombre_mentions_engie',
-                                title='Fréquence des Mentions Engie par Mois', color_discrete_sequence=["#E377C2"])
-    st.plotly_chart(fig_mentions, use_container_width=True)
-
-with col3:
-    # Graphique 3: Détection des tweets critiques par granularité temporelle
-    if time_granularity == "Jour" and 'date' in df.columns:
+    # Graphique 2: Nombre de tweets critiques par granularité temporelle
+    if time_granularity == "Heure":
+        fig_critiques = px.line(df, x='heure', y='nombre_tweets_critiques',
+                                title='Nombre de Tweets Critiques par Heure', color_discrete_sequence=["#E377C2"])
+    elif time_granularity == "Jour" and 'date' in df.columns:
         fig_critiques = px.line(df, x='date', y='nombre_tweets_critiques',
-                                title='Détection des Tweets Critiques par Jour', color_discrete_sequence=["#FF7F0E"])
+                                title='Nombre de Tweets Critiques par Jour', color_discrete_sequence=["#E377C2"])
     elif time_granularity == "Semaine":
         fig_critiques = px.bar(df, x='semaine', y='nombre_tweets_critiques',
-                                title='Détection des Tweets Critiques par Semaine', color_discrete_sequence=["#FF7F0E"])
+                                title='Nombre de Tweets Critiques par Semaine', color_discrete_sequence=["#E377C2"])
     else:  # Mois
         fig_critiques = px.bar(df, x='mois', y='nombre_tweets_critiques',
-                                title='Détection des Tweets Critiques par Mois', color_discrete_sequence=["#FF7F0E"])
+                                title='Nombre de Tweets Critiques par Mois', color_discrete_sequence=["#E377C2"])
     st.plotly_chart(fig_critiques, use_container_width=True)
+
+# Ajouter un graphique de dispersion (Scatter Plot) pour la relation entre les mentions d'Engie et les tweets critiques
+st.subheader("Relation entre les Mentions d'Engie et les Tweets Critiques")
+fig_scatter = px.scatter(df, x='nombre_mentions_engie', y='nombre_tweets_critiques',
+                        title='Scatter Plot: Mentions d\'Engie vs Tweets Critiques',
+                        color_discrete_sequence=["#FF7F0E"])
+st.plotly_chart(fig_scatter, use_container_width=True)
 
 # Afficher les données brutes (optionnel)
 with st.expander("Afficher les Données Brutes"):
