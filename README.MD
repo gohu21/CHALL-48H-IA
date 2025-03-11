@@ -1,0 +1,1 @@
+Il suffit de lancer le main.py pour ce qui est du nettoyage, kpi extract, et sentiment.
