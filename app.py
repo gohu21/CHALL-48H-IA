@@ -25,7 +25,10 @@ df = load_data(file_path)
 if 'created_at' in df.columns:
     df['date'] = pd.to_datetime(df['created_at'], errors='coerce').dt.date
 if 'hour' in df.columns:
-    df['hour'] = pd.to_numeric(df['hour'], errors='coerce').fillna(0)
+    df['hour'] = pd.to_numeric(df['hour'], errors='coerce').fillna(0).astype(int)
+
+if 'contains_keywords' in df.columns:
+    df['contains_keywords'] = df['contains_keywords'].astype(bool)
 
 # Sidebar pour les filtres
 with st.sidebar:
@@ -84,21 +87,25 @@ col1, col2 = st.columns(2)
 with col1:
     # Graphique 1: Nombre de tweets par granularité temporelle
     if time_granularity == "Heure":
-        fig_tweets = px.bar(df, x='hour', y='full_text',
+        tweets_per_hour = df.groupby('hour').size().reset_index(name='nombre_tweets')
+        fig_tweets = px.bar(tweets_per_hour, x='hour', y='nombre_tweets',
                             title='Nombre de Tweets par Heure',
                             color_discrete_sequence=["#0083B8"])
     elif time_granularity == "Jour":
-        fig_tweets = px.line(df, x='date', y='full_text',
+        tweets_per_day = df.groupby('date').size().reset_index(name='nombre_tweets')
+        fig_tweets = px.line(tweets_per_day, x='date', y='nombre_tweets',
                              title='Nombre de Tweets par Jour',
                              color_discrete_sequence=["#0083B8"])
     elif time_granularity == "Semaine":
         df['week'] = pd.to_datetime(df['created_at']).dt.strftime('%Y-%U')
-        fig_tweets = px.bar(df, x='week', y='full_text',
+        tweets_per_week = df.groupby('week').size().reset_index(name='nombre_tweets')
+        fig_tweets = px.bar(tweets_per_week, x='week', y='nombre_tweets',
                             title='Nombre de Tweets par Semaine',
                             color_discrete_sequence=["#0083B8"])
     else:  # Mois
         df['month'] = pd.to_datetime(df['created_at']).dt.strftime('%Y-%m')
-        fig_tweets = px.bar(df, x='month', y='full_text',
+        tweets_per_month = df.groupby('month').size().reset_index(name='nombre_tweets')
+        fig_tweets = px.bar(tweets_per_month, x='month', y='nombre_tweets',
                             title='Nombre de Tweets par Mois',
                             color_discrete_sequence=["#0083B8"])
     st.plotly_chart(fig_tweets, use_container_width=True)
@@ -106,19 +113,23 @@ with col1:
 with col2:
     # Graphique 2: Nombre de tweets critiques
     if time_granularity == "Heure":
-        fig_critiques = px.line(df, x='hour', y='contains_keywords',
+        critiques_par_heure = df[df['contains_keywords']].groupby('hour').size().reset_index(name='tweets_critiques')
+        fig_critiques = px.line(critiques_par_heure, x='hour', y='tweets_critiques',
                                 title='Nombre de Tweets Critiques par Heure',
                                 color_discrete_sequence=["#E377C2"])
     elif time_granularity == "Jour":
-        fig_critiques = px.line(df, x='date', y='contains_keywords',
+        critiques_par_jour = df[df['contains_keywords']].groupby('date').size().reset_index(name='tweets_critiques')
+        fig_critiques = px.line(critiques_par_jour, x='date', y='tweets_critiques',
                                 title='Nombre de Tweets Critiques par Jour',
                                 color_discrete_sequence=["#E377C2"])
     elif time_granularity == "Semaine":
-        fig_critiques = px.bar(df, x='week', y='contains_keywords',
+        critiques_par_semaine = df[df['contains_keywords']].groupby('week').size().reset_index(name='tweets_critiques')
+        fig_critiques = px.bar(critiques_par_semaine, x='week', y='tweets_critiques',
                                 title='Nombre de Tweets Critiques par Semaine',
                                 color_discrete_sequence=["#E377C2"])
     else:  # Mois
-        fig_critiques = px.bar(df, x='month', y='contains_keywords',
+        critiques_par_mois = df[df['contains_keywords']].groupby('month').size().reset_index(name='tweets_critiques')
+        fig_critiques = px.bar(critiques_par_mois, x='month', y='tweets_critiques',
                                 title='Nombre de Tweets Critiques par Mois',
                                 color_discrete_sequence=["#E377C2"])
     st.plotly_chart(fig_critiques, use_container_width=True)
