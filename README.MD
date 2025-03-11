@@ -40,8 +40,9 @@ cd CHALL-48H-IA
 ```bash
 pip install -r requirements.txt
 ```
-```
+
 3. **Lancer l'application Streamlit**
+```
     1. Aller sur https://streamlit.io/
     2. Se créer un compte et le lier à son github
     3. Créer une nouvelle app
