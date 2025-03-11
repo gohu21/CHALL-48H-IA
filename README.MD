@@ -53,44 +53,46 @@ pip install -r requirements.txt
 ## 📊 Fonctionnalités
 
 ### 🧹 **Nettoyage des données**
-✅ Suppression des doublons
-✅ Conversion des dates et identifiants au bon format
-✅ Extraction d'informations utiles (heure, longueur du texte, mots-clés critiques)
+✅ Suppression des doublons  
+✅ Conversion des dates et identifiants au bon format  
+✅ Extraction d'informations utiles (heure, longueur du texte, mots-clés critiques)  
 
 ### 📈 **Calcul des KPIs**
-✅ Nombre de tweets par jour/semaine/mois
-✅ Fréquence des mentions du compte Engie
-✅ Détection des tweets critiques avec mots-clés spécifiques
+✅ Nombre de tweets par jour/semaine/mois  
+✅ Fréquence des mentions du compte Engie  
+✅ Détection des tweets critiques avec mots-clés spécifiques  
 
 ### 😊 **Analyse de Sentiments**
-✅ Classification des tweets en Positif, Neutre ou Négatif
-✅ Affichage des proportions dans les KPIs
+✅ Classification des tweets en Positif, Neutre ou Négatif  
+✅ Affichage des proportions dans les KPIs  
+
+### 🤖 **Agent IA pour la catégorisation des plaintes** *(À implémenter)*
+❗ Détection automatique des types de réclamations (facturation, urgences, service client, etc.)  
+❗ Utilisation potentielle de modèles comme **Mistral** ou **Gemini**  
+❗ Génération de réponses automatiques basées sur les patterns identifiés (Bonus)  
 
 ### 📋 **Tableau de bord interactif (Streamlit)**
-✅ Visualisation dynamique des KPIs
-✅ Filtres avancés (plage de dates, granularité temporelle)
-✅ Affichage des données brutes pour une meilleure transparence
-
+✅ Visualisation dynamique des KPIs  
+✅ Filtres avancés (plage de dates, granularité temporelle)  
+✅ Affichage des données brutes pour une meilleure transparence  
 
 ## 🚨 Fonctionnalités à Améliorer / à Implémenter
 
-❗ Implémentation d'un modèle IA (Mistral/Gemini) pour détecter les types de réclamations
-❗ Automatisation des réponses basées sur les patterns détectés
-
+❗ Implémentation d'un modèle IA (Mistral/Gemini) pour détecter les types de réclamations  
+❗ Automatisation des réponses basées sur les patterns détectés  
 
 ## 🛠️ Dépendances Principales
-- **Python 3.8** (ou version supérieure)
-- **Pandas** (pour le traitement des données)
-- **Plotly** (pour la visualisation des données)
-- **Streamlit** (pour l'interface utilisateur)
-- **TextBlob** (pour l'analyse des sentiments)
+- **Python 3.8** (ou version supérieure)  
+- **Pandas** (pour le traitement des données)  
+- **Plotly** (pour la visualisation des données)  
+- **Streamlit** (pour l'interface utilisateur)  
+- **TextBlob** (pour l'analyse des sentiments)  
 
 ## 👥 Équipe du Projet
-- HOUBLOP Alexy
-- FRANCISCO Kenett
-- SENEL Elodie
-- AYITE Ekué Etienne
-- DE CARVALHO Hugo
-- ALCARAZ Hugo
-
+- HOUBLOP Alexy  
+- FRANCISCO Kenett  
+- SENEL Elodie  
+- AYITE Ekué Etienne  
+- DE CARVALHO Hugo  
+- ALCARAZ Hugo  
 
