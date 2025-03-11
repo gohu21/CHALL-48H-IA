@@ -1,7 +1,7 @@
 from textblob import TextBlob
 
 # Liste personnalisée de mots négatifs fréquents dans les plaintes
-negative_keywords = ['inadmissible', 'honteux', 'scandale', 'délai', 'panne', 'urgence', 'incompétent', 'arnaque', 'chère', 'abusé', 'mauvais', 'froid', 'problème', 'déçu','terrible', 'danger', 'dangereux']
+negative_keywords = ['inadmissible', 'honteux', 'scandale', 'délai', 'panne', 'urgence', 'incompétent', 'arnaque', 'chère', 'abusé', 'mauvais', 'froid', 'problème', 'déçu','terrible', 'danger', 'dangereux', 'escroc', 'plainte']
 
 def get_sentiment(text):
     analysis = TextBlob(text)
