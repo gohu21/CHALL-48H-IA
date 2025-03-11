@@ -20,7 +20,7 @@ data = prepare_date_features(data)
 kpi_results = extract_kpi(data)
 
 # 🔹 Étape 5 : Sauvegarde du fichier final
-output_path = "CHALL-48H-IA/output/filtered_tweets_engie_final.csv"
+output_path = "output/filtered_tweets_engie_final.csv"
 save_data(data, output_path)
 
 # 🔹 Étape 6 : Affichage des KPI
