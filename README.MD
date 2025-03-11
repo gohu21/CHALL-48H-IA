@@ -89,7 +89,7 @@ pip install -r requirements.txt
 - **TextBlob** (pour l'analyse des sentiments)  
 
 ## 👥 Équipe du Projet
-- HOUBLOP Alexy  
+- HOUBLOUP Alexy  
 - FRANCISCO Kenett  
 - SENEL Elodie  
 - AYITE Ekué Etienne  
