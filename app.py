@@ -47,7 +47,17 @@ with st.sidebar:
             max_value=max_date,
             value=(min_date, max_date),
         )
-        df = df[(df['date'] >= pd.to_datetime(start_date)) & (df['date'] <= pd.to_datetime(end_date))]
+        # Assurez-vous que toutes les dates sont bien au format `datetime.date`
+        if 'date' in df.columns:
+            df['date'] = pd.to_datetime(df['date'], errors='coerce').dt.date
+
+        # Convertir les dates de filtre en format `datetime.date`
+        if start_date and end_date:
+            start_date = start_date.date() if hasattr(start_date, 'date') else start_date
+            end_date = end_date.date() if hasattr(end_date, 'date') else end_date
+
+            # Filtrage des dates avec le bon format
+            df = df[(df['date'] >= start_date) & (df['date'] <= end_date)]
     else:
         start_date = None
         end_date = None
